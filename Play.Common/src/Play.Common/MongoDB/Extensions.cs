@@ -20,7 +20,7 @@ namespace Play.Common.MongoDB
                 var serviceSettings = configuration.GetSection(nameof(ServiceSettings)).Get<ServiceSettings>();
                 var mongoDBSettings = configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
                 var mongoClient = new MongoClient(mongoDBSettings.ConnectionString);
-                return mongoClient.GetDatabase($"{serviceSettings.ServiceName}-microservices");
+                return mongoClient.GetDatabase(serviceSettings.ServiceName);
             });
             return services;
         }
