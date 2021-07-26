@@ -23,9 +23,22 @@ namespace Play.Catalog.Service.Controllers
         }
 
         [HttpGet("{id}")]
-        public ItemDto GetById(Guid id)
+        public ActionResult<ItemDto> GetById(Guid id)
         {
-            return items.Find( item => item.Id == id);
+            ItemDto item = items.Find( item => item.Id == id);
+
+            if(item == null)
+            {
+                var notFoundPersonalized =  new
+                { 
+                    Status = 404, 
+                    Error = "Couldn't be find an item with that id"
+                };
+                return NotFound(notFoundPersonalized);
+            }
+
+
+            return item;
         }
 
         [HttpPost]
@@ -39,7 +52,7 @@ namespace Play.Catalog.Service.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(Guid id, UpdateItemDto updateItemDto)
         {
-            ItemDto existingItem = GetById(id);
+            ItemDto existingItem = items.Find( item => item.Id == id);
             if(existingItem != null)
             {
                 var updatedItem = existingItem with
